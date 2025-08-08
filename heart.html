@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Love Heart</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffebee;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+        }
+
+        .heart {
+            width: 100px;
+            height: 90px;
+            position: relative;
+            animation: heartbeat 1.2s infinite;
+            transform-origin: center;
+        }
+
+        .heart:before, .heart:after {
+            content: "";
+            position: absolute;
+            top: 0;
+            width: 50px;
+            height: 80px;
+            background: #ff4757;
+            border-radius: 50px 50px 0 0;
+        }
+
+        .heart:before {
+            left: 50px;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart:after {
+            left: 0;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+        @keyframes heartbeat {
+            0% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+            75% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .sparkle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkle 1s ease-out forwards;
+        }
+
+        @keyframes sparkle {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .message {
+            margin-top: 30px;
+            color: #ff4757;
+            font-size: 18px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 71, 87, 0.3);
+            opacity: 0;
+            animation: fadeIn 2s ease-in forwards 1s;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="heart"></div>
+        <div class="message">I Love U &lt;3</div>
+    </div>
+
+    <script>
+        // Create sparkle effect
+        document.addEventListener('DOMContentLoaded', function() {
+            const heart = document.querySelector('.heart');
+            const colors = ['#ff4757', '#eccc68', '#7bed9f', '#70a1ff', '#ff6b81'];
+            
+            heart.addEventListener('click', function(e) {
+                for (let i = 0; i < 15; i++) {
+                    const sparkle = document.createElement('div');
+                    sparkle.classList.add('sparkle');
+                    
+                    // Random position around the heart
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 50 + Math.random() * 50;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    sparkle.style.setProperty('--tx', tx + 'px');
+                    sparkle.style.setProperty('--ty', ty + 'px');
+                    sparkle.style.left = e.clientX + 'px';
+                    sparkle.style.top = e.clientY + 'px';
+                    sparkle.style.width = (5 + Math.random() * 10) + 'px';
+                    sparkle.style.height = sparkle.style.width;
+                    sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    document.body.appendChild(sparkle);
+                    
+                    // Remove sparkle after animation completes
+                    setTimeout(() => {
+                        sparkle.remove();
+                    }, 1000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
